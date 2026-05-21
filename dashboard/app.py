@@ -15,6 +15,11 @@ st.set_page_config(
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); }
+[data-testid="stAppViewContainer"] { padding-top: 0 !important; }
+[data-testid="stHeader"] { display: none !important; }
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+header { visibility: hidden; }
     .header-box {
         background: linear-gradient(90deg, #6a0572, #a855f7, #38bdf8);
         padding: 22px 30px; border-radius: 15px; margin-bottom: 25px;
