@@ -292,7 +292,13 @@ MIT License — free to use, modify and distribute.
 
 ---
 
-## ⭐ Support
+## 🔗 Live Links
 
-If you find this project helpful, please give it a ⭐ on GitHub!
+| Platform | Link | Description |
+|---|---|---|
+| 🌐 Live Dashboard | [clinical-decision-support.streamlit.app](https://clinical-decision-support.streamlit.app) | Streamlit UI |
+| ⚙️ Backend API | [clinical-decision-backend.onrender.com](https://clinical-decision-backend.onrender.com) | FastAPI Backend |
+| 📖 API Docs | [clinical-decision-backend.onrender.com/docs](https://clinical-decision-backend.onrender.com/docs) | Swagger UI |
+| 💻 GitHub Repo | [Sailaja-Kalle/clinical-decision-support-system](https://github.com/Sailaja-Kalle/clinical-decision-support-system) | Source Code |
 
+---
