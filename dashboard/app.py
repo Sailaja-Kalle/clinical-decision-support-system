@@ -173,8 +173,7 @@ if not check_login():
     <div style="background:linear-gradient(135deg,#1e1040,#162040);border:1px solid #7c3aed;
     border-radius:20px;padding:40px;width:400px;text-align:center;
     box-shadow:0 0 40px rgba(168,85,247,0.3);">
-        <h2 style="color:#c084fc;margin-bottom:5px;">🏥 Clinical Decision</h2>
-        <h3 style="color:#38bdf8;margin-bottom:25px;">Support System</h3>
+        <h2 style="color:#c084fc;margin-bottom:5px;font-size:1.5em;">🏥 Clinical Decision Support System</h2>
         <p style="color:#a855f7;margin-bottom:20px;">Please login to continue</p>
     </div>
     </div>
@@ -199,15 +198,7 @@ if not check_login():
             else:
                 st.error("⚠️ Please enter username and password!")
 
-        st.markdown("""
-        <div style="margin-top:20px;padding:15px;background:rgba(56,189,248,0.1);
-        border-radius:10px;border:1px solid #38bdf8;">
-            <p style="color:#7dd3fc;font-size:0.85em;margin:0;">
-            👨‍⚕️ <b>Doctor:</b> doctor / doctor123<br>
-            🔧 <b>Admin:</b> admin / admin123
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+        
     st.stop()
 
 st.markdown("""
