@@ -44,70 +44,71 @@ This system acts like an AI doctor assistant. When a patient's data is entered:
 
 ## 🏗️ Project Structure
 
+
 clinical-decision-support-system/
 │
-├── backend/                  # FastAPI backend
-│   ├── main.py               # Main app + all routes
-│   ├── schemas.py            # Pydantic models
-│   ├── config.py             # Configuration
-│   └── middleware.py         # Middleware
+├── backend/                    # FastAPI backend
+│   ├── main.py                 # Main app + all routes
+│   ├── schemas.py              # Pydantic models
+│   ├── config.py               # Configuration
+│   └── middleware.py           # Middleware
 │
-├── agents/                   # AI Agents
-│   ├── base_agent.py         # Base agent class
-│   ├── triage_agent.py       # Triage logic
-│   ├── risk_agent.py         # Risk scoring
-│   ├── diagnosis_agent.py    # Diagnosis + LLM
-│   ├── alert_agent.py        # Critical alerts
-│   ├── summary_agent.py      # LLM summaries
-│   └── orchestration_agent.py# Coordinates all agents
+├── agents/                     # AI Agents
+│   ├── base_agent.py           # Base agent class
+│   ├── triage_agent.py         # Triage logic
+│   ├── risk_agent.py           # Risk scoring
+│   ├── diagnosis_agent.py      # Diagnosis + LLM
+│   ├── alert_agent.py          # Critical alerts
+│   ├── summary_agent.py        # LLM summaries
+│   └── orchestration_agent.py  # Coordinates all agents
 │
-├── skills/                   # Reusable Skills
-│   ├── risk_scoring/         # Risk calculator
-│   ├── symptom_extraction/   # Symptom rules
-│   ├── lab_analysis/         # Lab ranges
-│   ├── medication_checker/   # Drug interactions
-│   └── summarization/        # Summary generator
+├── skills/                     # Reusable Skills
+│   ├── risk_scoring/           # Risk calculator
+│   ├── symptom_extraction/     # Symptom rules
+│   ├── lab_analysis/           # Lab ranges
+│   ├── medication_checker/     # Drug interactions
+│   └── summarization/          # Summary generator
 │
-├── hooks/                    # Pipeline Hooks
-│   ├── validation_hook.py    # Input validation
-│   ├── preprocessing_hook.py # Data cleaning
-│   ├── alert_hook.py         # Critical alerts
-│   ├── logging_hook.py       # Event logging
-│   ├── audit_hook.py         # Decision audit
-│   └── postprocessing_hook.py# Result enrichment
+├── hooks/                      # Pipeline Hooks
+│   ├── validation_hook.py      # Input validation
+│   ├── preprocessing_hook.py   # Data cleaning
+│   ├── alert_hook.py           # Critical alerts
+│   ├── logging_hook.py         # Event logging
+│   ├── audit_hook.py           # Decision audit
+│   └── postprocessing_hook.py  # Result enrichment
 │
-├── mcps/                     # MCP Servers
-│   ├── filesystem/           # File operations
-│   ├── postgres/             # Database queries
-│   └── browser/              # Web guidelines
+├── mcps/                       # MCP Servers
+│   ├── filesystem/             # File operations
+│   ├── postgres/               # Database queries
+│   └── browser/                # Web guidelines
 │
-├── models/                   # ML Models
-│   ├── train_model.py        # Model training
-│   ├── predict.py            # Predictions
-│   ├── preprocessing.py      # Data preprocessing
-│   └── saved_models/         # Trained model files
+├── models/                     # ML Models
+│   ├── train_model.py          # Model training
+│   ├── predict.py              # Predictions
+│   ├── preprocessing.py        # Data preprocessing
+│   └── saved_models/           # Trained model files
 │
-├── database/                 # Database Layer
-│   ├── connection.py         # DB connection
-│   ├── models.py             # Table models
-│   ├── crud.py               # CRUD operations
-│   └── db.py                 # DB initialization
+├── database/                   # Database Layer
+│   ├── connection.py           # DB connection
+│   ├── models.py               # Table models
+│   ├── crud.py                 # CRUD operations
+│   └── db.py                   # DB initialization
 │
-├── dashboard/                # Streamlit UI
-│   └── app.py                # Full dashboard
+├── dashboard/                  # Streamlit UI
+│   └── app.py                  # Full dashboard
 │
-├── tools/                    # Utility Tools
-│   ├── groq_client.py        # Groq LLM client
-│   ├── report_generator.py   # Report creation
-│   └── logger.py             # Logging utility
+├── tools/                      # Utility Tools
+│   ├── groq_client.py          # Groq LLM client
+│   ├── report_generator.py     # Report creation
+│   └── logger.py               # Logging utility
 │
-├── data/                     # Data Files
-├── logs/                     # Log Files
-├── reports/                  # Generated Reports
-├── feedback/                 # User Feedback
-├── .env                      # Environment variables
-├── requirements.txt          # Dependencies
-└── README.md                 # This file
+├── data/                       # Data Files
+├── logs/                       # Log Files
+├── reports/                    # Generated Reports
+├── feedback/                   # User Feedback
+├── .env                        # Environment variables
+├── requirements.txt            # Dependencies
+└── README.md                   # This file
 
 ---
 
