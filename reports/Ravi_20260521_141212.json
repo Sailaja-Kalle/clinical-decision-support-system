@@ -1,0 +1,28 @@
+{
+  "report_id": "RPT_20260521141212",
+  "generated_at": "2026-05-21 14:12:12",
+  "patient": {
+    "name": "Ravi",
+    "age": 30,
+    "oxygen": 88.0,
+    "temperature": 103.0,
+    "heart_rate": 120
+  },
+  "analysis": {
+    "risk_score": 65,
+    "risk_level": "MEDIUM",
+    "is_critical": true,
+    "possible_conditions": [
+      "Respiratory"
+    ],
+    "alert": true,
+    "alert_message": "CRITICAL ALERT: Patient requires immediate attention!",
+    "summary": "Mr. Ravi, a 30-year-old patient with a medium risk and respiratory condition, presents with hypoxia (O2 saturation of 88.0%) and fever (103.0F). Immediate attention is required to determine the cause of his respiratory symptoms and stabilize his oxygen levels.",
+    "risk_category": "MEDIUM PRIORITY",
+    "recommended_action": "Doctor consultation within 1 hour",
+    "ml_risk_prediction": "HIGH",
+    "ml_risk_probability": 71.0,
+    "guidelines": "Administer oxygen therapy, monitor SpO2, chest X-ray recommended."
+  },
+  "status": "COMPLETE"
+}

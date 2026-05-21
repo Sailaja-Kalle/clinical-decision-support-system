@@ -1,0 +1,5 @@
+{
+  "WBC": {"min": 4000, "max": 11000},
+  "glucose": {"min": 70, "max": 140},
+  "hemoglobin": {"min": 12, "max": 17}
+}

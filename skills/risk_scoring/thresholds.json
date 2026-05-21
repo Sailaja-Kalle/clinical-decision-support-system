@@ -1,0 +1,13 @@
+{
+  "age_threshold": 60,
+  "age_score": 20,
+  "oxygen_threshold": 90,
+  "oxygen_score": 30,
+  "temperature_threshold": 102,
+  "temperature_score": 20,
+  "heart_rate_threshold": 110,
+  "heart_rate_score": 15,
+  "chest_pain_score": 25,
+  "high_risk_threshold": 70,
+  "medium_risk_threshold": 40
+}

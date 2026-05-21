@@ -1,0 +1,6 @@
+{
+  "respiratory": ["fever", "cough", "shortness of breath", "wheezing"],
+  "cardiac": ["chest pain", "palpitations", "dizziness"],
+  "neurological": ["headache", "confusion", "seizure"],
+  "sepsis": ["fever", "chills", "rapid breathing"]
+}

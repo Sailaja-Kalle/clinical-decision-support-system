@@ -5,3 +5,7 @@ __pycache__/
 *.log
 *.pkl
 .DS_Store
+Lib/
+Scripts/
+share/
+etc/

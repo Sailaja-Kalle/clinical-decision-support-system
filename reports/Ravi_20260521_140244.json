@@ -1,0 +1,28 @@
+{
+  "report_id": "RPT_20260521140244",
+  "generated_at": "2026-05-21 14:02:44",
+  "patient": {
+    "name": "Ravi",
+    "age": 65,
+    "oxygen": 88.0,
+    "temperature": 103.0,
+    "heart_rate": 120
+  },
+  "analysis": {
+    "risk_score": 85,
+    "risk_level": "HIGH",
+    "is_critical": true,
+    "possible_conditions": [
+      "Respiratory"
+    ],
+    "alert": true,
+    "alert_message": "CRITICAL ALERT: Patient requires immediate attention!",
+    "summary": "Patient Ravi, a 65-year-old male with a high risk status and respiratory conditions, presents with severe dehydration and a potentially life-threatening infection, as indicated by an elevated oxygen saturation level of 88.0% and high fever of 103.0\u00b0F.\n\nImmediate medical attention is strongly advised to prevent further complications, and a comprehensive treatment plan should be implemented to address Ravi's respiratory conditions and manage his oxygen saturation and fever.",
+    "risk_category": "HIGH PRIORITY",
+    "recommended_action": "Immediate ICU evaluation",
+    "ml_risk_prediction": "HIGH",
+    "ml_risk_probability": 100.0,
+    "guidelines": "Administer oxygen therapy, monitor SpO2, chest X-ray recommended."
+  },
+  "status": "COMPLETE"
+}

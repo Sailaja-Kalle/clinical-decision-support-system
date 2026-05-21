@@ -1,0 +1,28 @@
+{
+  "report_id": "RPT_20260521143309",
+  "generated_at": "2026-05-21 14:33:09",
+  "patient": {
+    "name": "Janu",
+    "age": 30,
+    "oxygen": 98.0,
+    "temperature": 98.6,
+    "heart_rate": 80
+  },
+  "analysis": {
+    "risk_score": 0,
+    "risk_level": "LOW",
+    "is_critical": false,
+    "possible_conditions": [
+      "Respiratory"
+    ],
+    "alert": false,
+    "alert_message": "",
+    "summary": "Janu, a 30-year-old patient with low risk status and a respiratory condition, presents with stable vital signs, including a normal oxygen saturation of 98.0% and a temperature of 98.6F. Ongoing monitoring of her respiratory condition will be necessary to prevent any potential complications or changes in her clinical status.",
+    "risk_category": "LOW PRIORITY",
+    "recommended_action": "Routine monitoring",
+    "ml_risk_prediction": "LOW",
+    "ml_risk_probability": 0.0,
+    "guidelines": "Administer oxygen therapy, monitor SpO2, chest X-ray recommended."
+  },
+  "status": "COMPLETE"
+}

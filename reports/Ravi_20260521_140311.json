@@ -1,0 +1,28 @@
+{
+  "report_id": "RPT_20260521140311",
+  "generated_at": "2026-05-21 14:03:11",
+  "patient": {
+    "name": "Ravi",
+    "age": 65,
+    "oxygen": 88.0,
+    "temperature": 103.0,
+    "heart_rate": 120
+  },
+  "analysis": {
+    "risk_score": 85,
+    "risk_level": "HIGH",
+    "is_critical": true,
+    "possible_conditions": [
+      "Respiratory"
+    ],
+    "alert": true,
+    "alert_message": "CRITICAL ALERT: Patient requires immediate attention!",
+    "summary": "Summary for the Doctor: \n\nPatient Ravi, a 65-year-old male with respiratory conditions, is experiencing a severe respiratory distress episode indicated by low oxygen saturation (88.0%) and a high fever (103.0F). His high risk status necessitates prompt assessment and intervention to stabilize his condition and prevent potential respiratory failure.",
+    "risk_category": "HIGH PRIORITY",
+    "recommended_action": "Immediate ICU evaluation",
+    "ml_risk_prediction": "HIGH",
+    "ml_risk_probability": 100.0,
+    "guidelines": "Administer oxygen therapy, monitor SpO2, chest X-ray recommended."
+  },
+  "status": "COMPLETE"
+}

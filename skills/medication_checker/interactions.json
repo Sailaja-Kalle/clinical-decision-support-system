@@ -1,0 +1,5 @@
+{
+  "Warfarin": ["Ibuprofen", "Aspirin"],
+  "Metformin": ["Alcohol"],
+  "Lisinopril": ["Potassium"]
+}

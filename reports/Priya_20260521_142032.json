@@ -1,0 +1,28 @@
+{
+  "report_id": "RPT_20260521142032",
+  "generated_at": "2026-05-21 14:20:32",
+  "patient": {
+    "name": "Priya",
+    "age": 72,
+    "oxygen": 83.0,
+    "temperature": 104.5,
+    "heart_rate": 135
+  },
+  "analysis": {
+    "risk_score": 110,
+    "risk_level": "HIGH",
+    "is_critical": true,
+    "possible_conditions": [
+      "Respiratory"
+    ],
+    "alert": true,
+    "alert_message": "CRITICAL ALERT: Patient requires immediate attention!",
+    "summary": "Here is a 2 sentence clinical summary for the doctor:\n\n\"Patient Priya is a 72-year-old female presenting with a high risk status and respiratory condition, currently experiencing severe respiratory distress indicated by an oxygen saturation level of 83% and a fever of 104.5\u00b0F.\"",
+    "risk_category": "HIGH PRIORITY",
+    "recommended_action": "Immediate ICU evaluation",
+    "ml_risk_prediction": "HIGH",
+    "ml_risk_probability": 100.0,
+    "guidelines": "Administer oxygen therapy, monitor SpO2, chest X-ray recommended."
+  },
+  "status": "COMPLETE"
+}
