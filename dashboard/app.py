@@ -15,11 +15,16 @@ st.set_page_config(
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); }
-[data-testid="stAppViewContainer"] { padding-top: 0 !important; }
-[data-testid="stHeader"] { display: none !important; }
-#MainMenu { visibility: hidden; }
-footer { visibility: hidden; }
-header { visibility: hidden; }
+       [data-testid="stAppViewContainer"] { padding-top: 0rem !important; margin-top: -80px !important; }
+[data-testid="stHeader"] { display: none !important; height: 0 !important; }
+[data-testid="stToolbar"] { display: none !important; }
+[data-testid="stDecoration"] { display: none !important; }
+[data-testid="stStatusWidget"] { display: none !important; }
+#MainMenu { visibility: hidden !important; height: 0 !important; }
+footer { visibility: hidden !important; height: 0 !important; }
+header { visibility: hidden !important; height: 0 !important; }
+.block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+section[data-testid="stSidebar"] { top: 0 !important; }
     .header-box {
         background: linear-gradient(90deg, #6a0572, #a855f7, #38bdf8);
         padding: 22px 30px; border-radius: 15px; margin-bottom: 25px;
