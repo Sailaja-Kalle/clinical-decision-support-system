@@ -250,7 +250,7 @@ if menu == "🔍 Submit Patient":
             }
             with st.spinner("🤖 AI is analyzing patient..."):
                 try:
-                    response = requests.post(f"{API_URL}/patient", json=payload)
+                    response = requests.post(f"{API_URL}/patient", json=payload, timeout=60)
                     result = response.json()
                     analysis = result.get("analysis", {})
                     risk_level = analysis.get("risk_level", "LOW")
