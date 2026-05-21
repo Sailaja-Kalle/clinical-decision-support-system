@@ -12,3 +12,6 @@ httpx
 aiofiles
 numpy
 joblib
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
