@@ -3,6 +3,7 @@ import requests
 import json
 import os
 from datetime import datetime
+import pandas as pd
 
 API_URL = "https://clinical-decision-backend.onrender.com"
 
@@ -15,16 +16,17 @@ st.set_page_config(
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); }
-       [data-testid="stAppViewContainer"] { padding-top: 0rem !important; margin-top: -30px !important; }
-[data-testid="stHeader"] { display: none !important; height: 0 !important; }
-[data-testid="stToolbar"] { display: none !important; }
-[data-testid="stDecoration"] { display: none !important; }
-[data-testid="stStatusWidget"] { display: none !important; }
-#MainMenu { visibility: hidden !important; height: 0 !important; }
-footer { visibility: hidden !important; height: 0 !important; }
-header { visibility: hidden !important; height: 0 !important; }
-.block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
-section[data-testid="stSidebar"] { top: 0 !important; }
+    [data-testid="stAppViewContainer"] { padding-top: 0rem !important; margin-top: -30px !important; }
+    [data-testid="stHeader"] { display: none !important; height: 0 !important; }
+    [data-testid="stToolbar"] { display: none !important; }
+    [data-testid="stDecoration"] { display: none !important; }
+    [data-testid="stStatusWidget"] { display: none !important; }
+    #MainMenu { visibility: hidden !important; height: 0 !important; }
+    footer { visibility: hidden !important; height: 0 !important; }
+    header { visibility: hidden !important; height: 0 !important; }
+    .block-container { padding-top: 0rem !important; padding-bottom: 0rem !important; }
+    section[data-testid="stSidebar"] { top: 0 !important; }
+
     .header-box {
         background: linear-gradient(90deg, #6a0572, #a855f7, #38bdf8);
         padding: 22px 30px; border-radius: 15px; margin-bottom: 25px;
@@ -32,6 +34,7 @@ section[data-testid="stSidebar"] { top: 0 !important; }
     }
     .header-box h1 { color: white; font-size: 2.2em; margin: 0; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
     .header-box p { color: #e0b8ff; margin: 5px 0 0 0; }
+
     .metric-card {
         background: linear-gradient(135deg, #2d1b4e, #1e2a4a);
         border: 1px solid #7c3aed; border-radius: 12px; padding: 18px;
@@ -43,6 +46,7 @@ section[data-testid="stSidebar"] { top: 0 !important; }
     .metric-medium { color: #fb923c; text-shadow: 0 0 10px rgba(251,146,60,0.5); }
     .metric-low { color: #34d399; text-shadow: 0 0 10px rgba(52,211,153,0.5); }
     .metric-blue { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.5); }
+
     .alert-critical {
         background: linear-gradient(90deg, #4a0030, #6b0045);
         border-left: 5px solid #f472b6; border-radius: 8px; padding: 15px 20px;
@@ -78,6 +82,12 @@ section[data-testid="stSidebar"] { top: 0 !important; }
         margin: 20px 0 8px 0; text-transform: uppercase; letter-spacing: 2px;
         text-shadow: 0 0 10px rgba(192,132,252,0.5);
     }
+    .report-item {
+        background: linear-gradient(90deg, #1e1040, #162040);
+        border-left: 3px solid #a855f7; padding: 8px 15px;
+        margin: 5px 0; border-radius: 5px; color: #d8b4fe;
+    }
+
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #0a1f3a, #0d2744, #0a2040) !important;
         border-right: 2px solid #38bdf8 !important;
@@ -96,6 +106,7 @@ section[data-testid="stSidebar"] { top: 0 !important; }
         background: #0d2744 !important; border: 1px solid #38bdf8 !important;
         color: #f9a8d4 !important; border-radius: 8px !important;
     }
+
     .stTextInput input, .stNumberInput input {
         background-color: #1e1040 !important; color: #e0c3ff !important;
         border: 1px solid #7c3aed !important; border-radius: 8px !important;
@@ -109,6 +120,7 @@ section[data-testid="stSidebar"] { top: 0 !important; }
     .stCheckbox label { color: #e0c3ff !important; font-size: 1em !important; }
     .stCheckbox span { color: #e0c3ff !important; }
     [data-testid="stCheckbox"] label p { color: #e0c3ff !important; }
+
     .stButton > button {
         background: linear-gradient(90deg, #7c3aed, #a855f7, #38bdf8) !important;
         color: white !important; border: none !important; border-radius: 10px !important;
@@ -116,26 +128,19 @@ section[data-testid="stSidebar"] { top: 0 !important; }
         font-weight: bold !important; width: 100% !important;
         box-shadow: 0 0 20px rgba(168,85,247,0.4) !important;
     }
+
     .stTabs [data-baseweb="tab-list"] {
         background: linear-gradient(90deg, #0d2744, #0a1f38) !important;
-        border-radius: 10px !important;
-        padding: 5px !important;
+        border-radius: 10px !important; padding: 5px !important;
     }
     .stTabs [data-baseweb="tab"] {
-        color: #f9a8d4 !important;
-        font-weight: 600 !important;
-        font-size: 1em !important;
-        border-radius: 8px !important;
-        padding: 8px 20px !important;
+        color: #f9a8d4 !important; font-weight: 600 !important;
+        font-size: 1em !important; border-radius: 8px !important; padding: 8px 20px !important;
     }
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(90deg, #7c3aed, #38bdf8) !important;
-        color: white !important;
+        background: linear-gradient(90deg, #7c3aed, #38bdf8) !important; color: white !important;
     }
-    .stTabs [data-baseweb="tab-highlight"] {
-        background: transparent !important;
-    }
-
+    .stTabs [data-baseweb="tab-highlight"] { background: transparent !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -146,18 +151,18 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar Quick Stats
+# ── Sidebar Quick Stats ─────────────────────────────────────
 st.sidebar.markdown("---")
 try:
-    patients_resp = requests.get(f"{API_URL}/patients", timeout=2)
+    patients_resp = requests.get(f"{API_URL}/patients", timeout=5)
     all_patients = patients_resp.json()
     total_patients = len(all_patients)
 
-    risk_resp = requests.get(f"{API_URL}/high-risk-patients", timeout=2)
+    risk_resp = requests.get(f"{API_URL}/high-risk-patients", timeout=5)
     risk_data = risk_resp.json()
     high_risk = len(risk_data.get("high_risk_patients", []))
 
-    reports_resp = requests.get(f"{API_URL}/reports", timeout=2)
+    reports_resp = requests.get(f"{API_URL}/reports", timeout=5)
     reports_data = reports_resp.json()
     total_reports = len(reports_data.get("reports", []))
 
@@ -183,7 +188,7 @@ try:
         </div>
     </div>
     """, unsafe_allow_html=True)
-except:
+except Exception:
     st.sidebar.markdown("""
     <div style="background:#1a0a2e;border:1px solid #f472b6;border-radius:10px;padding:12px;">
         <span style="color:#f472b6;">🔴 Backend Offline</span>
@@ -205,7 +210,6 @@ if menu == "🔍 Submit Patient":
     st.markdown('<div class="section-title">📋 New Patient Analysis</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
-
     with col1:
         name = st.text_input("👤 Patient Name")
         age = st.number_input("🎂 Age", min_value=0, max_value=120, value=30)
@@ -288,7 +292,6 @@ elif menu == "👥 All Patients":
         patients = response.json()
         if patients:
             st.markdown(f'<div class="summary-box">📊 Total patients in database: <b>{len(patients)}</b></div>', unsafe_allow_html=True)
-            import pandas as pd
             df = pd.DataFrame(patients)
             cols = ["id", "name", "age", "oxygen", "temperature", "heart_rate", "created_at"]
             cols = [c for c in cols if c in df.columns]
@@ -307,7 +310,6 @@ elif menu == "🚨 High Risk Patients":
         patients = data.get("high_risk_patients", [])
         if patients:
             st.markdown(f'<div class="alert-critical">⚠️ {len(patients)} high risk patients detected!</div>', unsafe_allow_html=True)
-            import pandas as pd
             df = pd.DataFrame(patients)
             st.dataframe(df, use_container_width=True)
         else:
@@ -324,9 +326,7 @@ elif menu == "📁 Reports":
         reports = data.get("reports", [])
         if reports:
             st.markdown(f'<div class="summary-box">📂 Total reports saved: <b>{len(reports)}</b></div>', unsafe_allow_html=True)
-
             selected = st.selectbox("📄 Select a report to view:", reports)
-
             if selected:
                 report_path = os.path.join("reports", selected)
                 try:
@@ -362,7 +362,6 @@ elif menu == "📁 Reports":
                     st.markdown(f'<div class="action-box">💊 {analysis.get("recommended_action", "N/A")}</div>', unsafe_allow_html=True)
                     st.markdown(f'<div class="guideline-box">📖 {analysis.get("guidelines", "N/A")}</div>', unsafe_allow_html=True)
 
-                    # Download button
                     st.markdown('<div class="section-title">⬇️ Download Report</div>', unsafe_allow_html=True)
                     st.download_button(
                         label="⬇️ Download JSON Report",
@@ -389,7 +388,6 @@ elif menu == "💬 Feedback & Queries":
 
     with tab1:
         st.markdown('<div class="summary-box">We value your feedback! Please share your thoughts or queries below.</div>', unsafe_allow_html=True)
-
         fb_name = st.text_input("👤 Your Name")
         fb_email = st.text_input("📧 Email (optional)", placeholder="your@email.com")
         fb_type = st.selectbox("📌 Type", ["General Feedback", "Bug Report", "Feature Request", "Query", "Other"])
@@ -417,7 +415,7 @@ elif menu == "💬 Feedback & Queries":
                     with open(feedback_file, "r") as f:
                         try:
                             existing = json.load(f)
-                        except:
+                        except Exception:
                             existing = []
 
                 existing.append(new_entry)
@@ -433,7 +431,7 @@ elif menu == "💬 Feedback & Queries":
             with open(feedback_file, "r") as f:
                 try:
                     all_feedback = json.load(f)
-                except:
+                except Exception:
                     all_feedback = []
 
             if all_feedback:
