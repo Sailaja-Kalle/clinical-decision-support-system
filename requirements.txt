@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+pandas
+scikit-learn
+streamlit
+python-dotenv
+groq
+plotly
+requests
+httpx
+aiofiles
+numpy
+joblib
