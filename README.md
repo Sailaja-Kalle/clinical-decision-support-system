@@ -286,7 +286,7 @@ MIT License — free to use, modify and distribute.
 
 ## 👩‍💻 Developer
 
-**Sailaja Kalle**
+
 - GitHub: [@Sailaja-Kalle](https://github.com/Sailaja-Kalle)
 
 ---
