@@ -6,6 +6,26 @@ from datetime import datetime
 
 API_URL = "https://clinical-decision-backend.onrender.com"
 
+def login_user(username, password):
+    try:
+        response = requests.post(
+            f"{API_URL}/login",
+            data={"username": username, "password": password},
+            timeout=30
+        )
+        if response.status_code == 200:
+            return response.json()
+        return None
+    except Exception:
+        return None
+
+def check_login():
+    if "logged_in" not in st.session_state:
+        st.session_state.logged_in = False
+    if "user_data" not in st.session_state:
+        st.session_state.user_data = {}
+    return st.session_state.logged_in
+
 import threading
 
 def keep_alive():
@@ -147,12 +167,70 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+if not check_login():
+    st.markdown("""
+    <div style="display:flex;justify-content:center;align-items:center;min-height:80vh;">
+    <div style="background:linear-gradient(135deg,#1e1040,#162040);border:1px solid #7c3aed;
+    border-radius:20px;padding:40px;width:400px;text-align:center;
+    box-shadow:0 0 40px rgba(168,85,247,0.3);">
+        <h2 style="color:#c084fc;margin-bottom:5px;">🏥 Clinical Decision</h2>
+        <h3 style="color:#38bdf8;margin-bottom:25px;">Support System</h3>
+        <p style="color:#a855f7;margin-bottom:20px;">Please login to continue</p>
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        username = st.text_input("👤 Username", placeholder="Enter username")
+        password = st.text_input("🔒 Password", type="password", placeholder="Enter password")
+
+        if st.button("🔐 Login"):
+            if username and password:
+                with st.spinner("Logging in..."):
+                    result = login_user(username, password)
+                    if result:
+                        st.session_state.logged_in = True
+                        st.session_state.user_data = result
+                        st.success(f"✅ Welcome {result['full_name']}!")
+                        st.rerun()
+                    else:
+                        st.error("❌ Invalid username or password!")
+            else:
+                st.error("⚠️ Please enter username and password!")
+
+        st.markdown("""
+        <div style="margin-top:20px;padding:15px;background:rgba(56,189,248,0.1);
+        border-radius:10px;border:1px solid #38bdf8;">
+            <p style="color:#7dd3fc;font-size:0.85em;margin:0;">
+            👨‍⚕️ <b>Doctor:</b> doctor / doctor123<br>
+            🔧 <b>Admin:</b> admin / admin123
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    st.stop()
+
 st.markdown("""
 <div class="header-box">
     <h1>🏥 Clinical Decision Support System</h1>
     <p>AI-Powered Patient Analysis Platform</p>
 </div>
 """, unsafe_allow_html=True)
+
+
+user = st.session_state.get("user_data", {})
+st.sidebar.markdown(f"""
+<div style="background:linear-gradient(135deg,#0d2744,#0a1f38);border:1px solid #a855f7;
+border-radius:12px;padding:12px;margin-bottom:10px;">
+    <div style="color:#f9a8d4;font-weight:bold;">👤 {user.get('full_name','User')}</div>
+    <div style="color:#7dd3fc;font-size:0.85em;">🎭 {user.get('role','').upper()}</div>
+</div>
+""", unsafe_allow_html=True)
+
+if st.sidebar.button("🚪 Logout"):
+    st.session_state.logged_in = False
+    st.session_state.user_data = {}
+    st.rerun()
 
 # Sidebar Quick Stats
 st.sidebar.markdown("---")

@@ -1,3 +1,12 @@
+from fastapi.security import OAuth2PasswordRequestForm
+from backend.auth import (
+    authenticate_user, create_access_token, get_current_user,
+    register_user, ACCESS_TOKEN_EXPIRE_MINUTES
+)
+from datetime import timedelta
+
+
+
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from backend.schemas import PatientInput
@@ -24,6 +33,48 @@ orchestration = OrchestrationAgent()
 filesystem_mcp = FilesystemMCP()
 postgres_mcp = PostgresMCP()
 browser_mcp = BrowserMCP()
+
+@app.post("/login")
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect username or password"
+        )
+    access_token = create_access_token(
+        data={"sub": user["username"]},
+        expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "username": user["username"],
+        "full_name": user["full_name"],
+        "role": user["role"]
+    }
+
+@app.post("/register")
+async def register(
+    username: str,
+    password: str,
+    full_name: str,
+    email: str,
+    role: str = "doctor"
+):
+    success = register_user(username, password, full_name, email, role)
+    if not success:
+        raise HTTPException(status_code=400, detail="Username already exists")
+    return {"message": f"User {username} registered successfully"}
+
+@app.get("/me")
+async def get_me(current_user: dict = Depends(get_current_user)):
+    return {
+        "username": current_user["username"],
+        "full_name": current_user["full_name"],
+        "email": current_user["email"],
+        "role": current_user["role"]
+    }
 
 @app.get("/")
 def home():
