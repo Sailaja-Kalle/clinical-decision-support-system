@@ -3,7 +3,6 @@ venv/
 __pycache__/
 *.db
 *.log
-*.pkl
 .DS_Store
 Lib/
 Scripts/
