@@ -292,13 +292,30 @@ MIT License — free to use, modify and distribute.
 
 ---
 
-## 🔗 Live Links
 
-| Platform | Link | Description |
+## 🚀 Live Demo
+
+| Platform | Link |
+|---|---|
+| 🌐 Live Dashboard | [clinical-decision-support.streamlit.app](https://clinical-decision-support.streamlit.app) |
+| ⚙️ Backend API | [clinical-decision-backend.onrender.com](https://clinical-decision-backend.onrender.com) |
+| 📖 API Docs | [clinical-decision-backend.onrender.com/docs](https://clinical-decision-backend.onrender.com/docs) |
+| 💻 GitHub | [Sailaja-Kalle/clinical-decision-support-system](https://github.com/Sailaja-Kalle/clinical-decision-support-system) |
+
+## ✅ Completed Phases
+
+| Phase | Description | Status |
 |---|---|---|
-| 🌐 Live Dashboard | [clinical-decision-support.streamlit.app](https://clinical-decision-support.streamlit.app) | Streamlit UI |
-| ⚙️ Backend API | [clinical-decision-backend.onrender.com](https://clinical-decision-backend.onrender.com) | FastAPI Backend |
-| 📖 API Docs | [clinical-decision-backend.onrender.com/docs](https://clinical-decision-backend.onrender.com/docs) | Swagger UI |
-| 💻 GitHub Repo | [Sailaja-Kalle/clinical-decision-support-system](https://github.com/Sailaja-Kalle/clinical-decision-support-system) | Source Code |
-
----
+| Phase 0 | Project Structure | ✅ |
+| Phase 1 | FastAPI Backend | ✅ |
+| Phase 2 | SQLite Database | ✅ |
+| Phase 3 | AI Agents (Triage, Risk, Diagnosis, Alert, Summary) | ✅ |
+| Phase 4 | Skills System | ✅ |
+| Phase 5 | Hooks Pipeline | ✅ |
+| Phase 6 | ML Model (RandomForest 90% accuracy) | ✅ |
+| Phase 7 | Groq LLM Integration | ✅ |
+| Phase 8 | MCP Servers | ✅ |
+| Phase 9 | Streamlit Dashboard | ✅ |
+| Phase 10 | Deployment (Streamlit Cloud + Render) | ✅ |
+| Phase 11 | Auth + Guest Access + Visitor Logs | ✅ |
+| Phase 12 | Fine Tuning (90% ML accuracy + improved predict) | ✅ |
