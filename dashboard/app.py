@@ -2,23 +2,12 @@ import streamlit as st
 import requests
 import json
 import os
+import pandas as pd
 from datetime import datetime
 
 API_URL = "https://clinical-decision-backend.onrender.com"
 
-def login_user(username, password):
-    try:
-        response = requests.post(
-            f"{API_URL}/login",
-            data={"username": username, "password": password},
-            timeout=30
-        )
-        if response.status_code == 200:
-            return response.json()
-        return None
-    except Exception:
-        return None
-
+# ── Guest Access ──────────────────────────────────────────
 def check_login():
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
@@ -26,8 +15,26 @@ def check_login():
         st.session_state.user_data = {}
     return st.session_state.logged_in
 
-import threading
+# Save guest entry to file
+def save_guest(name, email):
+    os.makedirs("feedback", exist_ok=True)
+    guest_file = os.path.join("feedback", "guests.json")
+    existing = []
+    if os.path.exists(guest_file):
+        with open(guest_file, "r") as f:
+            try:
+                existing = json.load(f)
+            except:
+                existing = []
+    existing.append({
+        "name": name,
+        "email": email,
+        "visited_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    })
+    with open(guest_file, "w") as f:
+        json.dump(existing, f, indent=2)
 
+import threading
 def keep_alive():
     import time
     while True:
@@ -36,7 +43,6 @@ def keep_alive():
         except:
             pass
         time.sleep(300)
-
 threading.Thread(target=keep_alive, daemon=True).start()
 
 st.set_page_config(
@@ -48,11 +54,11 @@ st.set_page_config(
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); }
-        [data-testid="stAppViewContainer"] { padding-top: 0 !important; }
-        [data-testid="stHeader"] { display: none !important; }
-        #MainMenu { visibility: hidden; }
-        footer { visibility: hidden; }
-        header { visibility: hidden; }
+    [data-testid="stAppViewContainer"] { padding-top: 0 !important; }
+    [data-testid="stHeader"] { display: none !important; }
+    #MainMenu { visibility: hidden; }
+    footer { visibility: hidden; }
+    header { visibility: hidden; }
     .header-box {
         background: linear-gradient(90deg, #6a0572, #a855f7, #38bdf8);
         padding: 22px 30px; border-radius: 15px; margin-bottom: 25px;
@@ -146,61 +152,67 @@ st.markdown("""
     }
     .stTabs [data-baseweb="tab-list"] {
         background: linear-gradient(90deg, #0d2744, #0a1f38) !important;
-        border-radius: 10px !important;
-        padding: 5px !important;
+        border-radius: 10px !important; padding: 5px !important;
     }
     .stTabs [data-baseweb="tab"] {
-        color: #f9a8d4 !important;
-        font-weight: 600 !important;
-        font-size: 1em !important;
-        border-radius: 8px !important;
+        color: #f9a8d4 !important; font-weight: 600 !important;
+        font-size: 1em !important; border-radius: 8px !important;
         padding: 8px 20px !important;
     }
     .stTabs [aria-selected="true"] {
         background: linear-gradient(90deg, #7c3aed, #38bdf8) !important;
         color: white !important;
     }
-    .stTabs [data-baseweb="tab-highlight"] {
-        background: transparent !important;
-    }
-
+    .stTabs [data-baseweb="tab-highlight"] { background: transparent !important; }
 </style>
 """, unsafe_allow_html=True)
 
+# ── LOGIN / GUEST ACCESS SCREEN ──────────────────────────────
 if not check_login():
     st.markdown("""
-    <div style="display:flex;justify-content:center;align-items:center;min-height:80vh;">
+    <div style="display:flex;justify-content:center;margin-top:40px;margin-bottom:10px;">
     <div style="background:linear-gradient(135deg,#1e1040,#162040);border:1px solid #7c3aed;
-    border-radius:20px;padding:40px;width:400px;text-align:center;
+    border-radius:20px;padding:35px 50px;width:480px;text-align:center;
     box-shadow:0 0 40px rgba(168,85,247,0.3);">
-        <h2 style="color:#c084fc;margin-bottom:5px;font-size:1.5em;">🏥 Clinical Decision Support System</h2>
-        <p style="color:#a855f7;margin-bottom:20px;">Please login to continue</p>
+        <div style="font-size:3em;margin-bottom:10px;">🏥</div>
+        <h2 style="color:#c084fc;margin-bottom:5px;font-size:1.5em;">Clinical Decision Support System</h2>
+        <p style="color:#7dd3fc;margin-bottom:5px;font-size:0.9em;">AI-Powered Patient Analysis Platform</p>
+        <div style="border-top:1px solid #7c3aed;margin:15px 0;"></div>
+        <p style="color:#a855f7;font-size:0.9em;margin-bottom:0;">Enter your details to access the system</p>
     </div>
     </div>
     """, unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        username = st.text_input("👤 Username", placeholder="Enter username")
-        password = st.text_input("🔒 Password", type="password", placeholder="Enter password")
+        guest_name = st.text_input("👤 Your Name", placeholder="e.g. Dr. Sarah Johnson")
+        guest_email = st.text_input("📧 Your Email", placeholder="e.g. sarah@hospital.com")
 
-        if st.button("🔐 Login"):
-            if username and password:
-                with st.spinner("Logging in..."):
-                    result = login_user(username, password)
-                    if result:
-                        st.session_state.logged_in = True
-                        st.session_state.user_data = result
-                        st.success(f"✅ Welcome {result['full_name']}!")
-                        st.rerun()
-                    else:
-                        st.error("❌ Invalid username or password!")
+        if st.button("🚀 Enter System"):
+            if guest_name.strip() and guest_email.strip():
+                if "@" in guest_email and "." in guest_email:
+                    # Check if doctor login
+                    is_doctor = (
+                        guest_email.strip().lower() == "doctor@doctor123.gmail.com" or
+                        guest_name.strip().lower() == "doctor"
+                    )
+                    role = "doctor" if is_doctor else "guest"
+                    save_guest(guest_name.strip(), guest_email.strip())
+                    st.session_state.logged_in = True
+                    st.session_state.user_data = {
+                        "full_name": guest_name.strip(),
+                        "email": guest_email.strip(),
+                        "role": role
+                    }
+                    st.success(f"✅ Welcome, {guest_name.strip()}!")
+                    st.rerun()
+                else:
+                    st.error("⚠️ Please enter a valid email address!")
             else:
-                st.error("⚠️ Please enter username and password!")
-
-        
+                st.error("⚠️ Please enter both your name and email!")
     st.stop()
 
+# ── MAIN APP ──────────────────────────────────────────────────
 st.markdown("""
 <div class="header-box">
     <h1>🏥 Clinical Decision Support System</h1>
@@ -208,13 +220,15 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
 user = st.session_state.get("user_data", {})
+is_doctor = user.get("role") == "doctor"
+
 st.sidebar.markdown(f"""
 <div style="background:linear-gradient(135deg,#0d2744,#0a1f38);border:1px solid #a855f7;
 border-radius:12px;padding:12px;margin-bottom:10px;">
     <div style="color:#f9a8d4;font-weight:bold;">👤 {user.get('full_name','User')}</div>
-    <div style="color:#7dd3fc;font-size:0.85em;">🎭 {user.get('role','').upper()}</div>
+    <div style="color:#7dd3fc;font-size:0.85em;">📧 {user.get('email','')}</div>
+    <div style="color:#34d399;font-size:0.8em;margin-top:4px;">🎭 {'Doctor' if is_doctor else 'Guest'}</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -269,20 +283,24 @@ except:
 
 st.sidebar.markdown("---")
 
-menu = st.sidebar.selectbox("🧭 Navigation", [
+# Doctor sees extra menu item
+nav_options = [
     "🔍 Submit Patient",
     "👥 All Patients",
     "🚨 High Risk Patients",
     "📁 Reports",
     "💬 Feedback & Queries"
-])
+]
+if is_doctor:
+    nav_options.append("🔐 Visitor Logs")
+
+menu = st.sidebar.selectbox("🧭 Navigation", nav_options)
 
 # ── Submit Patient ──────────────────────────────────────────
 if menu == "🔍 Submit Patient":
     st.markdown('<div class="section-title">📋 New Patient Analysis</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
-
     with col1:
         name = st.text_input("👤 Patient Name")
         age = st.number_input("🎂 Age", min_value=0, max_value=120, value=30)
@@ -365,7 +383,6 @@ elif menu == "👥 All Patients":
         patients = response.json()
         if patients:
             st.markdown(f'<div class="summary-box">📊 Total patients in database: <b>{len(patients)}</b></div>', unsafe_allow_html=True)
-            import pandas as pd
             df = pd.DataFrame(patients)
             cols = ["id", "name", "age", "oxygen", "temperature", "heart_rate", "created_at"]
             cols = [c for c in cols if c in df.columns]
@@ -384,7 +401,6 @@ elif menu == "🚨 High Risk Patients":
         patients = data.get("high_risk_patients", [])
         if patients:
             st.markdown(f'<div class="alert-critical">⚠️ {len(patients)} high risk patients detected!</div>', unsafe_allow_html=True)
-            import pandas as pd
             df = pd.DataFrame(patients)
             st.dataframe(df, use_container_width=True)
         else:
@@ -401,9 +417,7 @@ elif menu == "📁 Reports":
         reports = data.get("reports", [])
         if reports:
             st.markdown(f'<div class="summary-box">📂 Total reports saved: <b>{len(reports)}</b></div>', unsafe_allow_html=True)
-
             selected = st.selectbox("📄 Select a report to view:", reports)
-
             if selected:
                 report_path = os.path.join("reports", selected)
                 try:
@@ -439,7 +453,6 @@ elif menu == "📁 Reports":
                     st.markdown(f'<div class="action-box">💊 {analysis.get("recommended_action", "N/A")}</div>', unsafe_allow_html=True)
                     st.markdown(f'<div class="guideline-box">📖 {analysis.get("guidelines", "N/A")}</div>', unsafe_allow_html=True)
 
-                    # Download button
                     st.markdown('<div class="section-title">⬇️ Download Report</div>', unsafe_allow_html=True)
                     st.download_button(
                         label="⬇️ Download JSON Report",
@@ -447,7 +460,6 @@ elif menu == "📁 Reports":
                         file_name=selected,
                         mime="application/json"
                     )
-
                     st.markdown('<div class="section-title">📋 Full Raw Report</div>', unsafe_allow_html=True)
                     st.json(report_data)
 
@@ -461,12 +473,10 @@ elif menu == "📁 Reports":
 # ── Feedback & Queries ──────────────────────────────────────
 elif menu == "💬 Feedback & Queries":
     st.markdown('<div class="section-title">💬 Feedback & Queries</div>', unsafe_allow_html=True)
-
     tab1, tab2 = st.tabs(["📝 Submit Feedback", "📋 View All Feedback"])
 
     with tab1:
         st.markdown('<div class="summary-box">We value your feedback! Please share your thoughts or queries below.</div>', unsafe_allow_html=True)
-
         fb_name = st.text_input("👤 Your Name")
         fb_email = st.text_input("📧 Email (optional)", placeholder="your@email.com")
         fb_type = st.selectbox("📌 Type", ["General Feedback", "Bug Report", "Feature Request", "Query", "Other"])
@@ -479,16 +489,12 @@ elif menu == "💬 Feedback & Queries":
                 feedback_dir = "feedback"
                 os.makedirs(feedback_dir, exist_ok=True)
                 feedback_file = os.path.join(feedback_dir, "feedback.json")
-
                 new_entry = {
                     "id": datetime.now().strftime("%Y%m%d%H%M%S"),
-                    "name": fb_name,
-                    "email": fb_email,
-                    "type": fb_type,
-                    "message": fb_message,
+                    "name": fb_name, "email": fb_email,
+                    "type": fb_type, "message": fb_message,
                     "submitted_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 }
-
                 existing = []
                 if os.path.exists(feedback_file):
                     with open(feedback_file, "r") as f:
@@ -496,11 +502,9 @@ elif menu == "💬 Feedback & Queries":
                             existing = json.load(f)
                         except:
                             existing = []
-
                 existing.append(new_entry)
                 with open(feedback_file, "w") as f:
                     json.dump(existing, f, indent=2)
-
                 st.success("✅ Thank you! Your feedback has been submitted successfully!")
                 st.markdown(f'<div class="action-box">📌 Type: {fb_type}<br>👤 Name: {fb_name}<br>💬 Message: {fb_message}</div>', unsafe_allow_html=True)
 
@@ -512,7 +516,6 @@ elif menu == "💬 Feedback & Queries":
                     all_feedback = json.load(f)
                 except:
                     all_feedback = []
-
             if all_feedback:
                 st.markdown(f'<div class="summary-box">📊 Total feedback received: <b>{len(all_feedback)}</b></div>', unsafe_allow_html=True)
                 for fb in reversed(all_feedback):
@@ -537,3 +540,37 @@ elif menu == "💬 Feedback & Queries":
                 st.info("No feedback submitted yet.")
         else:
             st.info("No feedback submitted yet.")
+
+# ── Visitor Logs (Doctor Only) ──────────────────────────────
+elif menu == "🔐 Visitor Logs":
+    if not is_doctor:
+        st.error("🚫 Access denied. Doctor only.")
+    else:
+        st.markdown('<div class="section-title">🔐 Visitor Logs — Who Accessed the System</div>', unsafe_allow_html=True)
+        guest_file = os.path.join("feedback", "guests.json")
+        if os.path.exists(guest_file):
+            with open(guest_file, "r") as f:
+                try:
+                    guests = json.load(f)
+                except:
+                    guests = []
+            if guests:
+                st.markdown(f'<div class="summary-box">👥 Total visitors: <b>{len(guests)}</b></div>', unsafe_allow_html=True)
+                df = pd.DataFrame(guests)
+                st.dataframe(df, use_container_width=True)
+                for g in reversed(guests):
+                    st.markdown(f"""
+                    <div style="background:linear-gradient(135deg,#1e1040,#162040);
+                    border:1px solid #7c3aed;border-left:4px solid #38bdf8;
+                    border-radius:10px;padding:15px;margin:8px 0;">
+                        <span style="color:#f9a8d4;font-weight:bold;">👤 {g['name']}</span>
+                        &nbsp;&nbsp;
+                        <span style="color:#7dd3fc;">📧 {g['email']}</span>
+                        &nbsp;&nbsp;
+                        <span style="color:#c084fc;font-size:0.85em;">🕐 {g['visited_at']}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                st.info("No visitors yet.")
+        else:
+            st.info("No visitors yet.")
