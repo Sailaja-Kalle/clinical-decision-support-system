@@ -4,7 +4,7 @@ import json
 import os
 from datetime import datetime
 
-API_URL  = "https://clinical-decision-backend.onrender.com"
+API_URL = "https://clinical-decision-backend.onrender.com"
 
 st.set_page_config(
     page_title="Clinical Decision Support System",
