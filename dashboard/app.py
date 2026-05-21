@@ -6,6 +6,19 @@ from datetime import datetime
 
 API_URL = "https://clinical-decision-backend.onrender.com"
 
+import threading
+
+def keep_alive():
+    import time
+    while True:
+        try:
+            requests.get(f"{API_URL}/", timeout=10)
+        except:
+            pass
+        time.sleep(300)
+
+threading.Thread(target=keep_alive, daemon=True).start()
+
 st.set_page_config(
     page_title="Clinical Decision Support System",
     page_icon="🏥",
@@ -144,15 +157,15 @@ st.markdown("""
 # Sidebar Quick Stats
 st.sidebar.markdown("---")
 try:
-    patients_resp = requests.get(f"{API_URL}/patients", timeout=2)
+    patients_resp = requests.get(f"{API_URL}/patients", timeout=10)
     all_patients = patients_resp.json()
     total_patients = len(all_patients)
 
-    risk_resp = requests.get(f"{API_URL}/high-risk-patients", timeout=2)
+    risk_resp = requests.get(f"{API_URL}/high-risk-patients", timeout=10)
     risk_data = risk_resp.json()
     high_risk = len(risk_data.get("high_risk_patients", []))
 
-    reports_resp = requests.get(f"{API_URL}/reports", timeout=2)
+    reports_resp = requests.get(f"{API_URL}/reports", timeout=10)
     reports_data = reports_resp.json()
     total_reports = len(reports_data.get("reports", []))
 
