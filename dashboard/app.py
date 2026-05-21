@@ -15,7 +15,7 @@ st.set_page_config(
 st.markdown("""
 <style>
     .stApp { background: linear-gradient(135deg, #1a0a2e 0%, #16213e 50%, #0f3460 100%); }
-       [data-testid="stAppViewContainer"] { padding-top: 0rem !important; margin-top: -80px !important; }
+       [data-testid="stAppViewContainer"] { padding-top: 0rem !important; margin-top: -50px !important; }
 [data-testid="stHeader"] { display: none !important; height: 0 !important; }
 [data-testid="stToolbar"] { display: none !important; }
 [data-testid="stDecoration"] { display: none !important; }
